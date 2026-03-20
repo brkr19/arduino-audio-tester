@@ -8,34 +8,23 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #ffffff;
-      --bg2: #f5f5f3;
-      --bg3: #eeecea;
-      --text: #1a1a18;
-      --text2: #6b6b67;
-      --border: rgba(0,0,0,0.12);
-      --border2: rgba(0,0,0,0.22);
-      --info-bg: #e6f1fb;
-      --info-text: #185fa5;
-      --success-bg: #eaf3de;
-      --success-text: #3b6d11;
-      --radius: 8px;
-      --radius-lg: 12px;
+      --bg: #ffffff; --bg2: #f5f5f3; --bg3: #eeecea;
+      --text: #1a1a18; --text2: #6b6b67;
+      --bdr: rgba(0,0,0,0.12); --bdr2: rgba(0,0,0,0.22);
+      --info-bg: #e6f1fb; --info-text: #185fa5;
+      --warn-bg: #faeeda; --warn-text: #854f0b;
+      --suc-bg: #eaf3de; --suc-text: #3b6d11;
+      --r: 8px; --rl: 12px;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #1e1e1c;
-        --bg2: #2a2a28;
-        --bg3: #333331;
-        --text: #f0ede8;
-        --text2: #9a9994;
-        --border: rgba(255,255,255,0.12);
-        --border2: rgba(255,255,255,0.22);
-        --info-bg: #0c447c;
-        --info-text: #b5d4f4;
-        --success-bg: #27500a;
-        --success-text: #c0dd97;
+        --bg: #1e1e1c; --bg2: #2a2a28; --bg3: #333331;
+        --text: #f0ede8; --text2: #9a9994;
+        --bdr: rgba(255,255,255,0.12); --bdr2: rgba(255,255,255,0.22);
+        --info-bg: #0c447c; --info-text: #b5d4f4;
+        --warn-bg: #633806; --warn-text: #fac775;
+        --suc-bg: #27500a; --suc-text: #c0dd97;
       }
     }
 
@@ -52,322 +41,289 @@
 
     .card {
       background: var(--bg);
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius-lg);
+      border: 0.5px solid var(--bdr);
+      border-radius: var(--rl);
       padding: 2rem;
       width: 100%;
-      max-width: 580px;
+      max-width: 680px;
     }
 
     h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
     .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 2rem; }
+    code { font-family: monospace; font-size: 12px; background: var(--bg2); padding: 2px 6px; border-radius: 4px; }
 
-    .section-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--text2);
-      margin-bottom: 10px;
+    .sl {
+      font-size: 11px; font-weight: 500; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--text2); margin-bottom: 10px;
     }
-
-    .divider {
-      border: none;
-      border-top: 0.5px solid var(--border);
-      margin: 1.5rem 0;
+    .sh {
+      font-size: 11px; color: var(--text2); font-weight: 400;
+      text-transform: none; letter-spacing: 0; margin-left: 6px; opacity: .75;
     }
 
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .slider-row label {
-      font-size: 13px;
-      color: var(--text2);
-      min-width: 76px;
-    }
-    .slider-row input[type=range] { flex: 1; accent-color: var(--info-text); }
-    .slider-row span {
-      font-size: 13px;
-      font-weight: 500;
-      min-width: 48px;
-      text-align: right;
-      color: var(--text);
-      font-variant-numeric: tabular-nums;
-    }
+    hr { border: none; border-top: 0.5px solid var(--bdr); margin: 1.5rem 0; }
+
+    .srow { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .srow label { font-size: 13px; color: var(--text2); min-width: 60px; }
+    .srow input[type=range] { flex: 1; accent-color: var(--info-text); }
+    .srow span { font-size: 13px; font-weight: 500; min-width: 72px; text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
 
     select {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: var(--radius);
-      border: 0.5px solid var(--border2);
-      background: var(--bg);
-      color: var(--text);
-      font-size: 13px;
-      margin-bottom: 12px;
+      width: 100%; padding: 8px 10px; border-radius: var(--r);
+      border: 0.5px solid var(--bdr2); background: var(--bg);
+      color: var(--text); font-size: 13px; margin-bottom: 10px;
     }
 
-    .delay-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 1rem;
+    .ref {
+      display: flex; flex-wrap: wrap; gap: 6px 16px;
+      padding: 10px 12px; background: var(--bg2);
+      border-radius: var(--r); margin-bottom: 4px;
     }
+    .ref-item { font-size: 12px; color: var(--text2); font-variant-numeric: tabular-nums; }
+    .ref-item b { font-weight: 500; color: var(--text); margin-right: 3px; }
 
-    .delay-card {
-      background: var(--bg2);
-      border-radius: var(--radius);
-      padding: 12px;
-    }
-    .delay-card .d-label {
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text2);
-      margin-bottom: 8px;
-    }
-    .delay-card input[type=range] { width: 100%; accent-color: var(--info-text); margin-bottom: 4px; }
-    .delay-card .d-val {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-      font-variant-numeric: tabular-nums;
-    }
+    .seq-ed { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
 
-    .controls {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
+    .nc {
+      position: relative; width: 88px;
+      background: var(--bg2); border: 0.5px solid var(--bdr); border-radius: var(--r);
+      padding: 5px 4px 8px; display: flex; flex-direction: column;
+      align-items: center; gap: 2px; transition: border-color .1s, background .1s;
     }
+    .nc.active { background: var(--info-bg); border-color: var(--info-text); }
+    .nc.played { opacity: .4; }
 
-    button {
-      cursor: pointer;
-      font-size: 14px;
-      padding: 9px 20px;
-      border-radius: var(--radius);
-      border: 0.5px solid var(--border2);
-      background: transparent;
-      color: var(--text);
-      font-family: inherit;
+    .del {
+      position: absolute; top: 3px; right: 3px; width: 16px; height: 16px;
+      border: none; background: transparent; color: var(--text2);
+      font-size: 12px; cursor: pointer; padding: 0; line-height: 1;
+      border-radius: 3px; display: flex; align-items: center; justify-content: center;
     }
-    button:hover { background: var(--bg2); }
-    button:active { transform: scale(0.98); }
-    button:disabled { opacity: 0.38; cursor: not-allowed; transform: none; }
+    .del:hover { background: var(--bg3); color: var(--text); }
 
-    button.primary {
-      background: var(--info-bg);
-      color: var(--info-text);
-      border-color: transparent;
-      font-weight: 500;
+    .nn {
+      font-size: 22px; font-weight: 500; color: var(--text);
+      cursor: pointer; user-select: none;
+      margin-top: 5px; margin-bottom: 2px;
+      width: 100%; text-align: center; border-radius: 4px; padding: 2px 0;
     }
-    button.primary:hover { opacity: 0.88; }
+    .nn:hover { background: var(--bg3); }
+    .nn.rest { color: var(--text2); font-size: 17px; }
 
-    button.loop-on {
-      background: var(--success-bg);
-      color: var(--success-text);
-      border-color: transparent;
+    .vrow { display: flex; gap: 2px; width: 100%; margin-bottom: 1px; }
+    .vrow button {
+      flex: 1; font-size: 9px; font-weight: 500; padding: 3px 0;
+      border: 0.5px solid var(--bdr); border-radius: 3px;
+      background: var(--bg); color: var(--text2);
+      cursor: pointer; line-height: 1; font-family: monospace;
     }
+    .vrow button:hover { background: var(--bg3); color: var(--text); }
+    .vrow.dur button.on { background: var(--info-bg); color: var(--info-text); border-color: transparent; }
+    .vrow.rst button.on { background: var(--warn-bg); color: var(--warn-text); border-color: transparent; }
 
-    .seq {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 1rem;
-    }
+    .vlbl { font-size: 9px; text-transform: uppercase; letter-spacing: .05em; color: var(--text2); text-align: center; margin-bottom: 1px; }
 
-    .note-pill {
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 0.5px solid var(--border);
-      color: var(--text2);
-      background: var(--bg);
-      font-family: monospace;
-      transition: background 0.1s, color 0.1s;
+    .add-btn {
+      width: 88px; min-height: 116px; background: transparent;
+      border: 0.5px dashed var(--bdr2); border-radius: var(--r);
+      color: var(--text2); font-size: 24px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-family: inherit;
     }
-    .note-pill.active {
-      background: var(--info-bg);
-      color: var(--info-text);
-      border-color: transparent;
-    }
-    .note-pill.played {
-      background: var(--bg2);
-      color: var(--text2);
-    }
+    .add-btn:hover { background: var(--bg2); color: var(--text); border-style: solid; }
 
-    .status {
-      font-size: 13px;
-      color: var(--text2);
-      min-height: 20px;
+    .ctrls { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cb {
+      cursor: pointer; font-size: 14px; padding: 9px 20px;
+      border-radius: var(--r); border: 0.5px solid var(--bdr2);
+      background: transparent; color: var(--text); font-family: inherit;
     }
+    .cb:hover { background: var(--bg2); }
+    .cb:active { transform: scale(.98); }
+    .cb:disabled { opacity: .38; cursor: not-allowed; transform: none; }
+    .cb.prim { background: var(--info-bg); color: var(--info-text); border-color: transparent; font-weight: 500; }
+    .cb.prim:hover { opacity: .88; }
+    .cb.lon { background: var(--suc-bg); color: var(--suc-text); border-color: transparent; }
 
-    code {
-      font-family: monospace;
-      font-size: 12px;
-      background: var(--bg2);
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
+    .status { font-size: 13px; color: var(--text2); min-height: 20px; margin-top: 1rem; }
   </style>
 </head>
 <body>
 <div class="card">
   <h1>Arduino buzzer emulator</h1>
-  <p class="subtitle">Simulates pin 9 <code>tone()</code> / <code>noTone()</code> via Web Audio API &mdash; no hardware needed</p>
+  <p class="subtitle">Simulates pin 5 <code>tone()</code> / <code>noTone()</code> using BPM + standard note values &mdash; no hardware needed</p>
 
-  <p class="section-label">Playback</p>
-  <div class="slider-row">
-    <label>Speed</label>
-    <input type="range" min="25" max="200" value="100" id="speed" />
-    <span id="speed-out">1.0x</span>
-  </div>
-  <div class="slider-row">
-    <label>Volume</label>
-    <input type="range" min="0" max="100" value="60" id="vol" />
-    <span id="vol-out">60%</span>
-  </div>
-
-  <p class="section-label" style="margin-top:4px;">Waveform</p>
+  <p class="sl">Tempo &amp; sound</p>
+  <div class="srow"><label>BPM</label><input type="range" min="40" max="240" value="120" step="1" id="bpm" /><span id="bpm-out">120 BPM</span></div>
+  <div class="srow"><label>Volume</label><input type="range" min="0" max="100" value="60" id="vol" /><span id="vol-out">60%</span></div>
   <select id="wave">
     <option value="square" selected>Square (closest to Arduino piezo)</option>
     <option value="triangle">Triangle (softer)</option>
     <option value="sawtooth">Sawtooth</option>
     <option value="sine">Sine (mellow)</option>
   </select>
+  <div class="ref" id="ref"></div>
 
-  <hr class="divider" />
+  <hr />
 
-  <p class="section-label">Delay constants (ms)</p>
-  <div class="delay-grid">
-    <div class="delay-card">
-      <div class="d-label">Short</div>
-      <input type="range" min="25" max="300" value="75" step="5" id="d-short" />
-      <div class="d-val" id="d-short-out">75 ms</div>
-    </div>
-    <div class="delay-card">
-      <div class="d-label">Medium</div>
-      <input type="range" min="50" max="600" value="200" step="10" id="d-med" />
-      <div class="d-val" id="d-med-out">200 ms</div>
-    </div>
-    <div class="delay-card">
-      <div class="d-label">Long</div>
-      <input type="range" min="200" max="1500" value="600" step="25" id="d-long" />
-      <div class="d-val" id="d-long-out">600 ms</div>
-    </div>
+  <p class="sl">
+    Sequence
+    <span class="sh">click letter to cycle &middot; <span style="color:var(--info-text)">blue = note duration</span> &middot; <span style="color:var(--warn-text)">amber = rest after</span></span>
+  </p>
+  <p style="font-size:11px;color:var(--text2);margin-bottom:12px;">W = whole &nbsp; H = half &nbsp; Q = quarter &nbsp; E = eighth &nbsp; X = sixteenth &nbsp; R = rest</p>
+  <div class="seq-ed" id="seq-ed"></div>
+
+  <hr />
+
+  <div class="ctrls">
+    <button class="cb prim" id="pb">&#9654; Play</button>
+    <button class="cb" id="sb" disabled>&#9632; Stop</button>
+    <button class="cb" id="lb">Loop: off</button>
+    <button class="cb" id="rb">&#8635; Reset</button>
   </div>
-
-  <hr class="divider" />
-
-  <div class="controls">
-    <button class="primary" id="play-btn">&#9654; Play</button>
-    <button id="stop-btn" disabled>&#9632; Stop</button>
-    <button id="loop-btn">Loop: off</button>
-  </div>
-
-  <div class="seq" id="seq"></div>
-  <div class="status" id="status">Ready</div>
+  <div class="status" id="st">Ready</div>
 </div>
 
 <script>
-  const NOTE = { C:261.6, D:293.7, E:329.6, F:349.2, G:392, A:220, B:246.9 };
+  const NC = ['C','D','E','F','G','A','B','R'];
+  const NF = { C:261.6, D:293.7, E:329.6, F:349.2, G:392, A:220, B:246.9 };
+  const NV = { W:4, H:2, Q:1, E:0.5, X:0.25 };
+  const NV_KEYS = ['W','H','Q','E','X'];
+  const NV_NAMES = { W:'whole', H:'half', Q:'quarter', E:'eighth', X:'sixteenth' };
 
-  function getDelays() {
-    return {
-      S: parseInt(document.getElementById('d-short').value),
-      M: parseInt(document.getElementById('d-med').value),
-      L: parseInt(document.getElementById('d-long').value),
-    };
+  const DEFAULT_SEQ = [
+    {n:'C',dur:'E',rst:'E'},{n:'D',dur:'E',rst:'E'},{n:'F',dur:'E',rst:'Q'},
+    {n:'F',dur:'E',rst:'E'},{n:'F',dur:'E',rst:'E'},
+    {n:'F',dur:'E',rst:'X'},{n:'F',dur:'E',rst:'X'},{n:'F',dur:'E',rst:'X'},{n:'F',dur:'E',rst:'E'},
+    {n:'C',dur:'E',rst:'E'},{n:'D',dur:'E',rst:'E'},{n:'F',dur:'E',rst:'Q'},
+    {n:'F',dur:'E',rst:'E'},{n:'F',dur:'E',rst:'E'},
+    {n:'F',dur:'E',rst:'X'},{n:'F',dur:'E',rst:'X'},{n:'F',dur:'E',rst:'X'},{n:'F',dur:'E',rst:'E'},
+    {n:'F',dur:'Q',rst:'E'},{n:'F',dur:'Q',rst:'E'},{n:'E',dur:'E',rst:'Q'}
+  ];
+
+  let seq = DEFAULT_SEQ.map(s => ({...s}));
+  let ci = -1, playing = false, looping = false, stopFlag = false;
+  let ctx = null, gn = null, osc = null;
+
+  function getBpm() { return +document.getElementById('bpm').value; }
+  function ms(v) { return Math.round((60000 / getBpm()) * NV[v]); }
+
+  function updateRef() {
+    document.getElementById('ref').innerHTML =
+      NV_KEYS.map(k => `<span class="ref-item"><b>${k}</b>${ms(k)} ms</span>`).join('');
   }
 
-  function buildSequence() {
-    const {S,M,L} = getDelays();
-    return [
-      {n:'C',dur:M,gap:M},{n:'D',dur:M,gap:M},{n:'F',dur:M,gap:L},
-      {n:'F',dur:M,gap:M},{n:'F',dur:M,gap:M},
-      {n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},
-      {n:'C',dur:M,gap:M},{n:'D',dur:M,gap:M},{n:'F',dur:M,gap:L},
-      {n:'F',dur:M,gap:M},{n:'F',dur:M,gap:M},
-      {n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},
-      {n:'F',dur:L,gap:M},{n:'F',dur:L,gap:M},{n:'E',dur:M,gap:L}
-    ];
+  function render() {
+    const container = document.getElementById('seq-ed');
+    container.innerHTML = '';
+
+    seq.forEach((step, i) => {
+      const card = document.createElement('div');
+      card.className = 'nc' + (i === ci ? ' active' : i < ci ? ' played' : '');
+
+      const del = document.createElement('button');
+      del.className = 'del'; del.textContent = '\u00d7'; del.title = 'Remove';
+      del.addEventListener('click', () => { if (playing) return; seq.splice(i, 1); render(); });
+
+      const nn = document.createElement('div');
+      nn.className = 'nn' + (step.n === 'R' ? ' rest' : '');
+      nn.textContent = step.n === 'R' ? '\u2014' : step.n;
+      nn.title = 'Click to cycle note';
+      nn.addEventListener('click', () => {
+        if (playing) return;
+        seq[i].n = NC[(NC.indexOf(step.n) + 1) % NC.length];
+        render();
+      });
+
+      const grp = document.createElement('div');
+      grp.style.width = '100%';
+
+      for (const [prop, cls] of [['dur','dur'],['rst','rst']]) {
+        const row = document.createElement('div');
+        row.className = 'vrow ' + cls;
+        NV_KEYS.forEach(v => {
+          const b = document.createElement('button');
+          b.textContent = v;
+          b.title = NV_NAMES[v] + ' (' + ms(v) + ' ms)';
+          if (step[prop] === v) b.classList.add('on');
+          b.addEventListener('click', () => { if (playing) return; seq[i][prop] = v; render(); });
+          row.appendChild(b);
+        });
+        const lbl = document.createElement('div');
+        lbl.className = 'vlbl';
+        lbl.textContent = cls === 'dur' ? 'note' : 'rest';
+        grp.appendChild(row); grp.appendChild(lbl);
+      }
+
+      card.appendChild(del); card.appendChild(nn); card.appendChild(grp);
+      container.appendChild(card);
+    });
+
+    const add = document.createElement('button');
+    add.className = 'add-btn'; add.textContent = '+'; add.title = 'Add note';
+    add.addEventListener('click', () => { if (playing) return; seq.push({n:'C', dur:'E', rst:'E'}); render(); });
+    container.appendChild(add);
   }
 
-  const seqEl = document.getElementById('seq');
-  const template = buildSequence();
-  const pills = template.map((s,i) => {
-    const el = document.createElement('div');
-    el.className = 'note-pill';
-    el.textContent = s.n;
-    el.id = 'p' + i;
-    seqEl.appendChild(el);
-    return el;
-  });
+  function updateCards() {
+    document.querySelectorAll('#seq-ed .nc').forEach((c, i) => {
+      c.className = 'nc' + (i === ci ? ' active' : i < ci ? ' played' : '');
+    });
+  }
 
-  document.getElementById('speed').addEventListener('input', function() {
-    document.getElementById('speed-out').textContent = (this.value/100).toFixed(1) + 'x';
+  render(); updateRef();
+
+  document.getElementById('bpm').addEventListener('input', function() {
+    document.getElementById('bpm-out').textContent = this.value + ' BPM';
+    updateRef();
   });
   document.getElementById('vol').addEventListener('input', function() {
     document.getElementById('vol-out').textContent = this.value + '%';
-    if (gainNode) gainNode.gain.value = this.value / 100 * 0.4;
-  });
-  document.getElementById('d-short').addEventListener('input', function() {
-    document.getElementById('d-short-out').textContent = this.value + ' ms';
-  });
-  document.getElementById('d-med').addEventListener('input', function() {
-    document.getElementById('d-med-out').textContent = this.value + ' ms';
-  });
-  document.getElementById('d-long').addEventListener('input', function() {
-    document.getElementById('d-long-out').textContent = this.value + ' ms';
+    if (gn) gn.gain.value = this.value / 100 * 0.4;
   });
 
-  let ctx = null, gainNode = null, osc = null;
-  let stopFlag = false, looping = false, playing = false;
+  const pb = document.getElementById('pb'), sb = document.getElementById('sb');
+  const lb = document.getElementById('lb'), rb = document.getElementById('rb');
+  const st = document.getElementById('st');
 
-  const playBtn  = document.getElementById('play-btn');
-  const stopBtn  = document.getElementById('stop-btn');
-  const loopBtn  = document.getElementById('loop-btn');
-  const statusEl = document.getElementById('status');
-
-  loopBtn.addEventListener('click', () => {
+  lb.addEventListener('click', () => {
     looping = !looping;
-    loopBtn.textContent = 'Loop: ' + (looping ? 'on' : 'off');
-    loopBtn.className = looping ? 'loop-on' : '';
+    lb.textContent = 'Loop: ' + (looping ? 'on' : 'off');
+    lb.className = 'cb' + (looping ? ' lon' : '');
   });
 
-  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+  rb.addEventListener('click', () => {
+    if (playing) return;
+    seq = DEFAULT_SEQ.map(s => ({...s}));
+    ci = -1; render(); st.textContent = 'Reset to default sequence';
+  });
 
-  async function runSequence() {
-    const speed = document.getElementById('speed').value / 100;
-    const wave  = document.getElementById('wave').value;
+  function sleep(t) { return new Promise(r => setTimeout(r, t)); }
 
+  async function run() {
+    const wave = document.getElementById('wave').value;
     do {
-      const seq = buildSequence();
       for (let i = 0; i < seq.length; i++) {
         if (stopFlag) return;
-        const {n, dur, gap} = seq[i];
-        pills.forEach((p, j) => { p.className = 'note-pill' + (j < i ? ' played' : ''); });
-        pills[i].className = 'note-pill active';
-        statusEl.textContent = 'Playing ' + n + ' @ ' + NOTE[n].toFixed(1) + ' Hz';
-
-        osc = ctx.createOscillator();
-        osc.type = wave;
-        osc.frequency.value = NOTE[n];
-        osc.connect(gainNode);
-        osc.start();
-        await sleep(dur / speed);
-        osc.stop();
-        osc.disconnect();
-        osc = null;
+        ci = i; updateCards();
+        const { n, dur, rst } = seq[i];
+        const dm = ms(dur), rm = ms(rst);
+        st.textContent = n === 'R'
+          ? `Rest \u2014 ${NV_NAMES[dur]} (${dm} ms)`
+          : `${n} \u2014 ${NV_NAMES[dur]} note (${dm} ms) + ${NV_NAMES[rst]} rest (${rm} ms)`;
+        if (n !== 'R') {
+          osc = ctx.createOscillator(); osc.type = wave; osc.frequency.value = NF[n];
+          osc.connect(gn); osc.start();
+          await sleep(dm);
+          osc.stop(); osc.disconnect(); osc = null;
+        } else {
+          await sleep(dm);
+        }
         if (stopFlag) return;
-        await sleep(gap / speed);
+        await sleep(rm);
       }
       if (!stopFlag && looping) {
-        statusEl.textContent = 'Looping\u2026 (1s pause)';
-        await sleep(1000 / speed);
+        st.textContent = 'Looping\u2026'; ci = -1; updateCards();
+        await sleep(500);
       }
     } while (looping && !stopFlag);
   }
@@ -375,37 +331,23 @@
   async function play() {
     if (playing) return;
     ctx = new (window.AudioContext || window.webkitAudioContext)();
-    gainNode = ctx.createGain();
-    gainNode.gain.value = document.getElementById('vol').value / 100 * 0.4;
-    gainNode.connect(ctx.destination);
-    stopFlag = false;
-    playing = true;
-    playBtn.disabled = true;
-    stopBtn.disabled = false;
-    statusEl.textContent = 'Playing\u2026';
-    await runSequence();
-    if (!stopFlag) {
-      statusEl.textContent = 'Done';
-      pills.forEach(p => p.className = 'note-pill played');
-    }
-    playing = false;
-    playBtn.disabled = false;
-    stopBtn.disabled = true;
-    ctx.close();
+    gn = ctx.createGain(); gn.gain.value = document.getElementById('vol').value / 100 * 0.4;
+    gn.connect(ctx.destination);
+    stopFlag = false; playing = true; pb.disabled = true; sb.disabled = false;
+    await run();
+    if (!stopFlag) { st.textContent = 'Done'; ci = seq.length; updateCards(); }
+    playing = false; pb.disabled = false; sb.disabled = true; ctx.close();
   }
 
   function stop() {
     stopFlag = true;
     if (osc) { try { osc.stop(); osc.disconnect(); } catch(e) {} }
-    pills.forEach(p => p.className = 'note-pill');
-    statusEl.textContent = 'Stopped';
-    playing = false;
-    playBtn.disabled = false;
-    stopBtn.disabled = true;
+    ci = -1; updateCards(); st.textContent = 'Stopped';
+    playing = false; pb.disabled = false; sb.disabled = true;
   }
 
-  playBtn.addEventListener('click', play);
-  stopBtn.addEventListener('click', stop);
+  pb.addEventListener('click', play);
+  sb.addEventListener('click', stop);
 </script>
 </body>
 </html>
