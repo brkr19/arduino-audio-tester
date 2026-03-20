@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arduino Buzzer Emulator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg2: #f5f5f3;
+      --bg3: #eeecea;
+      --text: #1a1a18;
+      --text2: #6b6b67;
+      --border: rgba(0,0,0,0.12);
+      --border2: rgba(0,0,0,0.22);
+      --info-bg: #e6f1fb;
+      --info-text: #185fa5;
+      --success-bg: #eaf3de;
+      --success-text: #3b6d11;
+      --radius: 8px;
+      --radius-lg: 12px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1e1c;
+        --bg2: #2a2a28;
+        --bg3: #333331;
+        --text: #f0ede8;
+        --text2: #9a9994;
+        --border: rgba(255,255,255,0.12);
+        --border2: rgba(255,255,255,0.22);
+        --info-bg: #0c447c;
+        --info-text: #b5d4f4;
+        --success-bg: #27500a;
+        --success-text: #c0dd97;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg3);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      width: 100%;
+      max-width: 580px;
+    }
+
+    h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+    .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 2rem; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text2);
+      margin-bottom: 10px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 0.5px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .slider-row label {
+      font-size: 13px;
+      color: var(--text2);
+      min-width: 76px;
+    }
+    .slider-row input[type=range] { flex: 1; accent-color: var(--info-text); }
+    .slider-row span {
+      font-size: 13px;
+      font-weight: 500;
+      min-width: 48px;
+      text-align: right;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      border: 0.5px solid var(--border2);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .delay-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .delay-card {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+    .delay-card .d-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text2);
+      margin-bottom: 8px;
+    }
+    .delay-card input[type=range] { width: 100%; accent-color: var(--info-text); margin-bottom: 4px; }
+    .delay-card .d-val {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      cursor: pointer;
+      font-size: 14px;
+      padding: 9px 20px;
+      border-radius: var(--radius);
+      border: 0.5px solid var(--border2);
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+    }
+    button:hover { background: var(--bg2); }
+    button:active { transform: scale(0.98); }
+    button:disabled { opacity: 0.38; cursor: not-allowed; transform: none; }
+
+    button.primary {
+      background: var(--info-bg);
+      color: var(--info-text);
+      border-color: transparent;
+      font-weight: 500;
+    }
+    button.primary:hover { opacity: 0.88; }
+
+    button.loop-on {
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-color: transparent;
+    }
+
+    .seq {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .note-pill {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 0.5px solid var(--border);
+      color: var(--text2);
+      background: var(--bg);
+      font-family: monospace;
+      transition: background 0.1s, color 0.1s;
+    }
+    .note-pill.active {
+      background: var(--info-bg);
+      color: var(--info-text);
+      border-color: transparent;
+    }
+    .note-pill.played {
+      background: var(--bg2);
+      color: var(--text2);
+    }
+
+    .status {
+      font-size: 13px;
+      color: var(--text2);
+      min-height: 20px;
+    }
+
+    code {
+      font-family: monospace;
+      font-size: 12px;
+      background: var(--bg2);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Arduino buzzer emulator</h1>
+  <p class="subtitle">Simulates pin 9 <code>tone()</code> / <code>noTone()</code> via Web Audio API &mdash; no hardware needed</p>
+
+  <p class="section-label">Playback</p>
+  <div class="slider-row">
+    <label>Speed</label>
+    <input type="range" min="25" max="200" value="100" id="speed" />
+    <span id="speed-out">1.0x</span>
+  </div>
+  <div class="slider-row">
+    <label>Volume</label>
+    <input type="range" min="0" max="100" value="60" id="vol" />
+    <span id="vol-out">60%</span>
+  </div>
+
+  <p class="section-label" style="margin-top:4px;">Waveform</p>
+  <select id="wave">
+    <option value="square" selected>Square (closest to Arduino piezo)</option>
+    <option value="triangle">Triangle (softer)</option>
+    <option value="sawtooth">Sawtooth</option>
+    <option value="sine">Sine (mellow)</option>
+  </select>
+
+  <hr class="divider" />
+
+  <p class="section-label">Delay constants (ms)</p>
+  <div class="delay-grid">
+    <div class="delay-card">
+      <div class="d-label">Short</div>
+      <input type="range" min="25" max="300" value="75" step="5" id="d-short" />
+      <div class="d-val" id="d-short-out">75 ms</div>
+    </div>
+    <div class="delay-card">
+      <div class="d-label">Medium</div>
+      <input type="range" min="50" max="600" value="200" step="10" id="d-med" />
+      <div class="d-val" id="d-med-out">200 ms</div>
+    </div>
+    <div class="delay-card">
+      <div class="d-label">Long</div>
+      <input type="range" min="200" max="1500" value="600" step="25" id="d-long" />
+      <div class="d-val" id="d-long-out">600 ms</div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="controls">
+    <button class="primary" id="play-btn">&#9654; Play</button>
+    <button id="stop-btn" disabled>&#9632; Stop</button>
+    <button id="loop-btn">Loop: off</button>
+  </div>
+
+  <div class="seq" id="seq"></div>
+  <div class="status" id="status">Ready</div>
+</div>
+
+<script>
+  const NOTE = { C:261.6, D:293.7, E:329.6, F:349.2, G:392, A:220, B:246.9 };
+
+  function getDelays() {
+    return {
+      S: parseInt(document.getElementById('d-short').value),
+      M: parseInt(document.getElementById('d-med').value),
+      L: parseInt(document.getElementById('d-long').value),
+    };
+  }
+
+  function buildSequence() {
+    const {S,M,L} = getDelays();
+    return [
+      {n:'C',dur:M,gap:M},{n:'D',dur:M,gap:M},{n:'F',dur:M,gap:L},
+      {n:'F',dur:M,gap:M},{n:'F',dur:M,gap:M},
+      {n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},
+      {n:'C',dur:M,gap:M},{n:'D',dur:M,gap:M},{n:'F',dur:M,gap:L},
+      {n:'F',dur:M,gap:M},{n:'F',dur:M,gap:M},
+      {n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},{n:'F',dur:M,gap:S},
+      {n:'F',dur:L,gap:M},{n:'F',dur:L,gap:M},{n:'E',dur:M,gap:L}
+    ];
+  }
+
+  const seqEl = document.getElementById('seq');
+  const template = buildSequence();
+  const pills = template.map((s,i) => {
+    const el = document.createElement('div');
+    el.className = 'note-pill';
+    el.textContent = s.n;
+    el.id = 'p' + i;
+    seqEl.appendChild(el);
+    return el;
+  });
+
+  document.getElementById('speed').addEventListener('input', function() {
+    document.getElementById('speed-out').textContent = (this.value/100).toFixed(1) + 'x';
+  });
+  document.getElementById('vol').addEventListener('input', function() {
+    document.getElementById('vol-out').textContent = this.value + '%';
+    if (gainNode) gainNode.gain.value = this.value / 100 * 0.4;
+  });
+  document.getElementById('d-short').addEventListener('input', function() {
+    document.getElementById('d-short-out').textContent = this.value + ' ms';
+  });
+  document.getElementById('d-med').addEventListener('input', function() {
+    document.getElementById('d-med-out').textContent = this.value + ' ms';
+  });
+  document.getElementById('d-long').addEventListener('input', function() {
+    document.getElementById('d-long-out').textContent = this.value + ' ms';
+  });
+
+  let ctx = null, gainNode = null, osc = null;
+  let stopFlag = false, looping = false, playing = false;
+
+  const playBtn  = document.getElementById('play-btn');
+  const stopBtn  = document.getElementById('stop-btn');
+  const loopBtn  = document.getElementById('loop-btn');
+  const statusEl = document.getElementById('status');
+
+  loopBtn.addEventListener('click', () => {
+    looping = !looping;
+    loopBtn.textContent = 'Loop: ' + (looping ? 'on' : 'off');
+    loopBtn.className = looping ? 'loop-on' : '';
+  });
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  async function runSequence() {
+    const speed = document.getElementById('speed').value / 100;
+    const wave  = document.getElementById('wave').value;
+
+    do {
+      const seq = buildSequence();
+      for (let i = 0; i < seq.length; i++) {
+        if (stopFlag) return;
+        const {n, dur, gap} = seq[i];
+        pills.forEach((p, j) => { p.className = 'note-pill' + (j < i ? ' played' : ''); });
+        pills[i].className = 'note-pill active';
+        statusEl.textContent = 'Playing ' + n + ' @ ' + NOTE[n].toFixed(1) + ' Hz';
+
+        osc = ctx.createOscillator();
+        osc.type = wave;
+        osc.frequency.value = NOTE[n];
+        osc.connect(gainNode);
+        osc.start();
+        await sleep(dur / speed);
+        osc.stop();
+        osc.disconnect();
+        osc = null;
+        if (stopFlag) return;
+        await sleep(gap / speed);
+      }
+      if (!stopFlag && looping) {
+        statusEl.textContent = 'Looping\u2026 (1s pause)';
+        await sleep(1000 / speed);
+      }
+    } while (looping && !stopFlag);
+  }
+
+  async function play() {
+    if (playing) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    gainNode = ctx.createGain();
+    gainNode.gain.value = document.getElementById('vol').value / 100 * 0.4;
+    gainNode.connect(ctx.destination);
+    stopFlag = false;
+    playing = true;
+    playBtn.disabled = true;
+    stopBtn.disabled = false;
+    statusEl.textContent = 'Playing\u2026';
+    await runSequence();
+    if (!stopFlag) {
+      statusEl.textContent = 'Done';
+      pills.forEach(p => p.className = 'note-pill played');
+    }
+    playing = false;
+    playBtn.disabled = false;
+    stopBtn.disabled = true;
+    ctx.close();
+  }
+
+  function stop() {
+    stopFlag = true;
+    if (osc) { try { osc.stop(); osc.disconnect(); } catch(e) {} }
+    pills.forEach(p => p.className = 'note-pill');
+    statusEl.textContent = 'Stopped';
+    playing = false;
+    playBtn.disabled = false;
+    stopBtn.disabled = true;
+  }
+
+  playBtn.addEventListener('click', play);
+  stopBtn.addEventListener('click', stop);
+</script>
+</body>
+</html>
