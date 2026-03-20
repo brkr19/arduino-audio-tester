@@ -2,6 +2,8 @@
 
 Plays a song on a piezo buzzer using an ESP32-C6 dev module, programmed with Arduino IDE.
 
+Notes can be tested [here](https://github.com/brkr19/arduino-audio-tester) first and then be manually coded in the Arduino once figured out. (https://github.com/brkr19/arduino-audio-tester)
+
 ---
 
 ## Wiring
